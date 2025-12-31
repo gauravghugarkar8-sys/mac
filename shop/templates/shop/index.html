@@ -1,43 +1,114 @@
 {% extends 'shop/basic.html' %}
 {% block css %}
-        .col-md-3 {
-            display: inline-block;
-            margin-left: -4px;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        .card-img-top {
-    height: 188px;      <!--सर्व images ला same height देतो -->
-    object-fit: cover;
-    width: 95%;
+/* ===== Global Background ===== */
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* ===== Card Grid / spacing ===== */
+.col-md-3 {
+    display: inline-block;
+    perspective: 1200px;
+    margin: 15px; /* space around each card */
+    vertical-align: top;
+}
+
+/* ===== Carousel Inner spacing ===== */
+.carousel-inner .col-md-3 {
+    padding: 10px;
+}
+
+/* ===== Card (COURSE BLOCK) ===== */
+.card {
+    background: #ffffff; /* white background */
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    transition:
+        transform 0.6s ease,
+        box-shadow 0.6s ease,
+        background 0.4s ease;
+    font-family: 'Poppins', sans-serif;
+    padding: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    margin-bottom: 20px; /* vertical spacing between rows */
+}
+
+/* ===== 3D Hover Effect ===== */
+.card:hover {
+    transform: rotateX(6deg) rotateY(-6deg) scale(1.04);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* ===== CLICK (ACTIVE) EFFECT ===== */
+.card:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* ===== Image ===== */
+.card-img-top {
+    height: 188px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 18px 18px 0 0;
+    transform: translateZ(25px);
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: translateZ(45px) scale(1.03);
+}
+
+/* ===== Card Body ===== */
+.card-body {
+    color: #000000; /* black text */
+    transform: translateZ(20px);
+    padding: 15px;
+}
+
+/* ===== Title ===== */
+.card-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #000000; /* black title */
+}
+
+/* ===== Button ===== */
+.card .btn {
+    background: linear-gradient(135deg, #ff4d4d, #b30000);
+    border: none;
+    border-radius: 30px;
+    padding: 8px 18px;
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.4s ease;
+}
+
+/* Button click red glow */
+.card .btn:active {
+    transform: scale(0.9);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+}
+
+/* ===== Smooth Padding Fix ===== */
+body .no-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ===== Optional: small font adjustments ===== */
+.card-text {
+    font-size: 14px;
+    color: #333;
+}
+{% endblock %}
 
 
-        body .no-padding {
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        .carousel-control-prev-icon {
-            background: black no-repeat center center;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
-        }
-
-        .carousel-control-next-icon {
-            background: black no-repeat center center;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
-
-        }
-        body .carousel-indicators{
-        bottom:0;
-        }
-
-        .carousel-indicators .active{
-        background-color: blue;
-        }
-
-
-    {% endblock %}
 {% block body %}
 {% load static %}
 <div class="container">
@@ -64,11 +135,14 @@
         {% for i in product%}
         <div class="col-xs-3 col-sm-3 col-md-3">
           <div class="card" style="width: 18rem;">
-            <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxXYmX13SW2AArh-n0UteHe0YNKs-I9Mv2fw&s" class="card-img-top" alt="cours image">
             <div class="card-body">
-              <h5 class="card-title">{{i.product_name}}</h5>
-              <p class="card-text">{{i.desc}}</p>
-              <button id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button>
+              <h5 class="card-title">{{i.course_name}}</h5>
+                <form action="{% url 'addcourse' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ i.id }}">
+              <button  class="btn btn-primary cart" type="submit"> Add To cours</button>
+                    </form>
             </div>
           </div>
         </div>

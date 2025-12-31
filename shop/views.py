@@ -1,11 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
-
+from django.contrib.auth import authenticate, login, logout
 
 from django.http import HttpResponse
-from . models import Product
+from . models import courses,signup_v,mycours
 from math import ceil
+
+
 
 # def index(request):
 #         products = Product.objects.all()     #add all products
@@ -15,32 +17,108 @@ from math import ceil
 #
 #         return render(request, "shop/index.html", params)
 def index(request):
-    allProds = []
-    catprods = Product.objects.values('category', 'id')
+    allcours = []
+    catprods = courses.objects.values('category', 'id')
     cats = {item["category"] for item in catprods}
 
     for cat in cats:
-        prod = Product.objects.filter(category=cat)
+        prod = courses.objects.filter(category=cat)
         n = len(prod)
         nSlides = n // 4 + ceil((n / 4) - (n // 4))
-        allProds.append([prod, range(1, nSlides), nSlides])
+        allcours.append([prod, range(1, nSlides), nSlides])
 
 
-    params = {'allProds': allProds}
+    params = {'allProds': allcours}
     return render(request, "shop/index.html", params)
 
 
-def about(request):
+def login_p(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = signup_v.objects.filter(name=username, password=password).first()
+        if user:
+            # print(request.user.username)  he takla tar direct main user disel
+            request.session['user_id'] = user.id
+
+            return redirect('/')  # login successful
+
+        else:
+            return render(request, 'shop/login_p.html', {'error': 'Invalid Credentials'})
+
+    return render(request, 'shop/login_p.html')
+
+
+
     return render(request,'shop/ak.html')
 
-def contact(request):
-    return render(request,'shop/index.html')
+def signup(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.POST['password']
 
-def tracker(request):
-    return render(request,'shop/index.html')
+        signup_v.objects.create(
+            name=name,
+            email=email,
+            password=password
+        )
 
-def search(request):
-    return render(request,'shop/index.html')
+        return redirect( '/')
 
-def productview(request):
-    return render(request,'shop/index.html')
+    return render(request, 'shop/signup.html')
+
+def about(request):
+    catprods = courses.objects.all()
+    list={'catprods': catprods}
+    return render(request,'shop/about.html',list)
+
+# def mycourse(request):
+#     if request.method == "POST":
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         user = mycours.objects.filter(id=id).first()
+#         mycours.objects.create(
+#
+#     )
+#
+#
+#     return render(request,'shop/mycourse.html')
+
+
+def addcourse(request):
+    if request.method == "POST":
+        course_id = request.POST.get('id')  # course id POST मधून मिळेल
+        user_id = request.session.get('user_id')  # login केलेला user
+
+        if not user_id:
+            return redirect('login_p')
+
+        user = signup_v.objects.get(id=user_id)
+        course = courses.objects.get(id=course_id)
+
+        # duplicate टाळण्यासाठी
+        mycours.objects.get_or_create(user=user, course=course)
+
+        return redirect('about')  # किंवा हवे तिथे
+    else:
+        return redirect('about')
+
+
+def mycoursess(request):
+
+    catprods = mycours.objects.filter(user=request.session.get('user_id'))
+    list={'catprods': catprods}
+    print(list)
+    return render(request,'shop/mycours.html',list)
+
+def logout_p(request):
+    logout(request)          # Django logout
+    return redirect('login_p')
+
+def profile_p(request):
+    catprods =signup_v.objects.filter(id=request.session.get('user_id'))
+    list = {'catprods': catprods}
+    print(list)
+    return  render(request,'shop/profil.html',list)

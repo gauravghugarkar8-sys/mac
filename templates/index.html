@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GAG Classes | Professional Learning</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+/* Background */
+body{
+    background:#0f0f0f;
+    color:#fff;
+}
+
+/* Header */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+    background:#111;
+    position:sticky;
+    top:0;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:700;
+    color:#00e5ff;
+}
+
+nav a{
+    margin-left:25px;
+    text-decoration:none;
+    color:#ddd;
+    font-weight:400;
+    transition:0.3s;
+}
+nav a:hover{
+    color:#00e5ff;
+}
+
+/* Hero */
+.hero{
+    min-height:90vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+.hero h1{
+    font-size:52px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    opacity:0.9;
+    margin-bottom:30px;
+}
+
+.hero button{
+    padding:14px 40px;
+    font-size:16px;
+    border:none;
+    border-radius:6px;
+    background:#00e5ff;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+.hero button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,229,255,0.4);
+}
+
+/* About */
+.about{
+    padding:80px 60px;
+    background:#121212;
+    text-align:center;
+}
+.about h2{
+    font-size:36px;
+    margin-bottom:20px;
+    color:#00e5ff;
+}
+.about p{
+    max-width:800px;
+    margin:auto;
+    font-size:16px;
+    line-height:1.8;
+    color:#ccc;
+}
+
+/* Courses */
+.courses{
+    padding:80px 60px;
+    background:#0f0f0f;
+}
+.courses h2{
+    text-align:center;
+    font-size:36px;
+    margin-bottom:50px;
+    color:#00e5ff;
+}
+
+.course-box{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.course{
+    background:#151515;
+    padding:30px;
+    border-radius:12px;
+    transition:0.4s;
+    border:1px solid #222;
+}
+.course:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(0,229,255,0.2);
+}
+.course h3{
+    margin-bottom:10px;
+    color:#00e5ff;
+}
+.course p{
+    font-size:14px;
+    color:#bbb;
+}
+
+/* Contact */
+.contact{
+    padding:80px 60px;
+    background:#121212;
+    text-align:center;
+}
+.contact h2{
+    font-size:36px;
+    margin-bottom:20px;
+    color:#00e5ff;
+}
+.contact p{
+    color:#ccc;
+    margin-bottom:10px;
+}
+
+/* Footer */
+footer{
+    background:#0a0a0a;
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    color:#777;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    header{
+        flex-direction:column;
+        gap:10px;
+    }
+    .hero h1{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+    <a class="logo">GAG Classes</a>
+    <nav>
+        <a href="shop/login_p">Login</a>
+        <a href="shop/signup">Signup</a>
+        <a href="shop/about">Courses</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div>
+        <h1>Learn Skills That Matter</h1>
+        <p>Python • Django • AI & Machine Learning • Data Science</p>
+        <!--form action="http://127.0.0.1:8000/shop/" method="get"-->
+            <form action="{% url 'shop' %}" method="get">
+            <button type="submit">Explore Courses</button>
+        </form>
+    </div>
+</section>
+
+<!-- About -->
+<section class="about">
+    <h2>About GAG Classes</h2>
+    <p>
+        GAG Classes provides industry-ready training in programming,
+        web development and Artificial Intelligence with real-world projects,
+        expert guidance and career-focused learning.
+    </p>
+</section>
+
+<!-- Courses -->
+<section class="courses">
+    <h2>Our Courses</h2>
+    <div class="course-box">
+        <div class="course">
+            <h3>Python Programming</h3>
+            <p>From basics to advanced concepts with hands-on practice.</p>
+        </div>
+        <div class="course">
+            <h3>Django Web Development</h3>
+            <p>Build real-world websites and web applications.</p>
+        </div>
+        <div class="course">
+            <h3>AI & Machine Learning</h3>
+            <p>Learn ML algorithms, data handling and model building.</p>
+        </div>
+        <div class="course">
+            <h3>Data Science</h3>
+            <p>Data analysis, visualization and real project experience.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: gagclasses@gmail.com</p>
+    <p>Phone: +91 7058627365</p>
+</section>
+
+<!-- Footer -->
+<footer>
+    © 2025 GAG Classes | Professional Learning Platform
+</footer>
+
+</body>
+</html>
