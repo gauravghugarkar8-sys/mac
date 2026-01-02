@@ -19,7 +19,7 @@ from math import ceil
 def index(request):
     allcours = []
     catprods = courses.objects.values('category', 'id')
-    cats = {item["category"] for item in catprods}
+    cats = {item["category"] for item in catprods}   # contain only catogiry
 
     for cat in cats:
         prod = courses.objects.filter(category=cat)
@@ -34,13 +34,13 @@ def index(request):
 
 def login_p(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST['username']      #username = request.POST.get('username')
+        password = request.POST['password']       #password = request.POST.get('password')
 
         user = signup_v.objects.filter(name=username, password=password).first()
         if user:
             # print(request.user.username)  he takla tar direct main user disel
-            request.session['user_id'] = user.id
+            request.session['user_id'] = user.id   # login(request, user)  user in session
 
             return redirect('/')  # login successful
 
@@ -89,8 +89,8 @@ def about(request):
 
 def addcourse(request):
     if request.method == "POST":
-        course_id = request.POST.get('id')  # course id POST मधून मिळेल
-        user_id = request.session.get('user_id')  # login केलेला user
+        course_id = request.POST.get('id')  # course id get usin POST
+        user_id = request.session.get('user_id')  # login  user
 
         if not user_id:
             return redirect('login_p')
@@ -98,10 +98,10 @@ def addcourse(request):
         user = signup_v.objects.get(id=user_id)
         course = courses.objects.get(id=course_id)
 
-        # duplicate टाळण्यासाठी
+        #create
         mycours.objects.get_or_create(user=user, course=course)
 
-        return redirect('about')  # किंवा हवे तिथे
+        return redirect('mycoursess')  # किंवा हवे तिथे
     else:
         return redirect('about')
 
@@ -122,3 +122,10 @@ def profile_p(request):
     list = {'catprods': catprods}
     print(list)
     return  render(request,'shop/profil.html',list)
+
+
+# username = request.POST.get('username')  logion sathi
+# request.session.get('user_id') after login give id
+def contact(request):
+
+    return  render(request,'shop/contact.html')
